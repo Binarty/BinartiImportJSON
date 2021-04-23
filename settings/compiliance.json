@@ -1,0 +1,50 @@
+{
+  "hole": {
+    "d": "35",
+    "depth": "13"
+  },
+  "holder": {
+    "d": "20",
+    "depth": "13"
+  },
+  "minifixPlast": {
+    "d": "15",
+    "depth": "13"
+  },
+  "minifixEnd": {
+    "d": "8",
+    "depth": "28"
+  },
+  "dowelPlast": {
+    "d": "8",
+    "depth": "13"
+  },
+  "dowelEnd": {
+    "d": "8",
+    "depth": "20"
+  },
+  "confirmatPlast": {
+    "d": "7",
+    "depth": "Th"
+  },
+  "confirmatEnd": {
+    "d": "5",
+    "depth": "37"
+  },
+  "euroScrew": {
+    "d": "5",
+    "depth": "13"
+  },
+  "furnitureHand": {
+    "d": "5",
+    "depth": "Th"
+  },
+  "railing": {
+    "d": "10",
+    "depth": "13"
+  },
+  "mark": {
+    "d": "5",
+    "depth": "2"
+  }
+}
