@@ -5,16 +5,13 @@
 const FS = require('fs'),
     PATH = require('path');
 
-const VERSION = "1.0",
-    DEBUG_MODE = false;
-
+const VERSION = "1.0";
 
 const Reader = (function () {
     function Reader() {
     }
 
     Reader.prototype.run = function () {
-        if (!DEBUG_MODE) Helper.removeDir('debug');
         Helper.loadSettings();
         this.buildInterface();
     };
@@ -217,17 +214,11 @@ const Builder = (function () {
             if (!shape.path.hasOwnProperty(key)) continue;
             const p = shape.path[key];
             let x1, y1, x2, y2;
-            if (shape.rotated === '0') {
-                x1 = parseFloat(p.point0.x);
-                y1 = parseFloat(p.point0.y);
-                x2 = parseFloat(p.point1.x);
-                y2 = parseFloat(p.point1.y);
-            } else {
-                x2 = parseFloat(p.point0.y);
-                y2 = parseFloat(p.point0.x);
-                x1 = parseFloat(p.point1.y);
-                y1 = parseFloat(p.point1.x);
-            }
+
+            x1 = parseFloat(p.point0.x);
+            y1 = parseFloat(p.point0.y);
+            x2 = parseFloat(p.point1.x);
+            y2 = parseFloat(p.point1.y);
 
             if (p.type === 'line') {
                 c.AddLine(x1, y1, x2, y2);
@@ -235,27 +226,14 @@ const Builder = (function () {
                 let x3, y3;
                 const r = parseFloat(p.r);
 
-
-                if (shape.rotated === '0') {
-                    const d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)),
-                        h = Math.sqrt(r * r - (d / 2) * (d / 2));
-                    if (p.clockwise === "1") {
-                        x3 = x1 + (x2 - x1) / 2 + h * (y2 - y1) / d;
-                        y3 = y1 + (y2 - y1) / 2 - h * (x2 - x1) / d;
-                    } else {
-                        x3 = x1 + (x2 - x1) / 2 - h * (y2 - y1) / d;
-                        y3 = y1 + (y2 - y1) / 2 + h * (x2 - x1) / d;
-                    }
+                const d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)),
+                    h = Math.sqrt(r * r - (d / 2) * (d / 2));
+                if (p.clockwise === "1") {
+                    x3 = x1 + (x2 - x1) / 2 + h * (y2 - y1) / d;
+                    y3 = y1 + (y2 - y1) / 2 - h * (x2 - x1) / d;
                 } else {
-                    const d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)),
-                        h = Math.sqrt(r * r - (d / 2) * (d / 2));
-                    if (p.clockwise === "1") {
-                        x3 = x1 + (x2 - x1) / 2 + h * (y2 - y1) / d;
-                        y3 = y1 + (y2 - y1) / 2 - h * (x2 - x1) / d;
-                    } else {
-                        x3 = x1 + (x2 - x1) / 2 - h * (y2 - y1) / d;
-                        y3 = y1 + (y2 - y1) / 2 + h * (x2 - x1) / d;
-                    }
+                    x3 = x1 + (x2 - x1) / 2 - h * (y2 - y1) / d;
+                    y3 = y1 + (y2 - y1) / 2 + h * (x2 - x1) / d;
                 }
 
                 c.AddArc(NewPoint(x1, y1), NewPoint(x2, y2), NewPoint(x3, y3), p.clockwise === "0");
@@ -263,7 +241,7 @@ const Builder = (function () {
         }
 
         if (shape.rotated === '1') {
-            c.Rotate(c.Max.x / 2, c.Max.y / 2, 180);
+            c.Rotate(c.Max.x / 2, c.Max.y / 2, -90);
         }
 
         const getWithOrderName = shape.getWithOrder === 'true' ? '(Выдать с заказом)' : '';
@@ -428,7 +406,7 @@ const Builder = (function () {
                     panel.Butts[k].Thickness = Helper.roundToDot1(edge.thickness);
                     panel.Butts[k].Width = Helper.roundToDot1(edge.width);
                     panel.Butts[k].Sign = edge.name + edge.thickness + '/' + edge.width;
-                    panel.Butts[i].ClipPanel = false;
+                    panel.Butts[k].ClipPanel = false;
                 }
             }
         }
