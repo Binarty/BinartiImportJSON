@@ -436,7 +436,6 @@ const Builder = (function () {
 
         for (let i = 0; i < holes.length; i += 1) {
             let furnObj = null;
-            console.log(holes[i].name);
             if (holes[i].name === 'МФ') {
                 for (let key in holes[i].params) {
                     if (!holes[i].params.hasOwnProperty(key)) continue;
