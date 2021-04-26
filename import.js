@@ -262,8 +262,6 @@ const Builder = (function () {
 
         panel.Build();
 
-
-
         this.setPosition(panel, shape.position, offsetY, offsetX);
         this.setRotation(panel, shape.rotation);
     };
@@ -339,7 +337,6 @@ const Builder = (function () {
             }
         }
 
-
         if (data.product === 'rect') {
             this.buildRect(newDataF, offsetY, offsetX);
             this.buildRect(newDataB, offsetY, offsetX);
@@ -413,7 +410,6 @@ const Builder = (function () {
     };
 
     Builder.prototype.addCuts = function (panel, cuts) {
-
         for (let i = 0; i < cuts.length; i += 1) {
             const cut = panel.AddCut(),
                 x = Helper.roundToDot1(cuts[i].x),
@@ -435,42 +431,55 @@ const Builder = (function () {
         }
     };
 
-    Builder.prototype.addHoles = function (panel, holes, rotated) {
-        const furnObjects = [];
+    Builder.prototype.addHoles = function (panel, holes) {
+        const result = [];
+
         for (let i = 0; i < holes.length; i += 1) {
-            const h = holes[i];
-
-            let x = Helper.roundToDot1(h.x),
-                y = Helper.roundToDot1(h.y),
-                z = Helper.roundToDot1(h.z);
-
-            const furn = OpenFurniture(this.getFurnitureFilePath(h)),
-                furnObj = furn.Mount1(panel, x, y, 0, 0);
-            furnObjects.push(furnObj);
-
-            if (!furnObj) {
-                wlog('Не найден файл фурнитуры');
-                continue;
+            let furnObj = null;
+            console.log(holes[i].name);
+            if (holes[i].name === 'МФ') {
+                for (let key in holes[i].params) {
+                    if (!holes[i].params.hasOwnProperty(key)) continue;
+                    furnObj = this.mountHole(holes[i].params[key], panel);
+                    if (furnObj) result.push(furnObj);
+                }
+            } else {
+                furnObj = this.mountHole(holes[i].params, panel);
+                if (furnObj) result.push(furnObj);
             }
-
-            if (h.direction === '-z') {
-                furnObj.RotateGCS(AxisX, 180);
-            } else if (h.direction === 'z') {
-
-            } else if (h.direction === '-x') {
-                furnObj.RotateGCS(AxisY, -90);
-            } else if (h.direction === 'x') {
-                furnObj.RotateGCS(AxisY, 90);
-            } else if (h.direction === '-y') {
-                furnObj.RotateGCS(AxisX, 90);
-            } else if (h.direction === 'y') {
-                furnObj.RotateGCS(AxisX, -90);
-            }
-
-            furnObj.TranslateGCS(NewVector(0, 0, z));
         }
         panel.UserPropertyName = 'holes';
-        panel.UserProperty['holes'] = furnObjects;
+        panel.UserProperty['holes'] = result;
+    };
+
+    Builder.prototype.mountHole = function (h, panel) {
+        let x = Helper.roundToDot1(h.x),
+            y = Helper.roundToDot1(h.y),
+            z = Helper.roundToDot1(h.z);
+
+        const furn = OpenFurniture(this.getFurnitureFilePath(h)),
+            furnObj = furn.Mount1(panel, x, y, 0, 0);
+
+        if (!furnObj) {
+            wlog('Не найден файл фурнитуры');
+            return null;
+        }
+
+        if (h.direction === '-z') {
+            furnObj.RotateGCS(AxisX, 180);
+        } else if (h.direction === 'z') {
+
+        } else if (h.direction === '-x') {
+            furnObj.RotateGCS(AxisY, -90);
+        } else if (h.direction === 'x') {
+            furnObj.RotateGCS(AxisY, 90);
+        } else if (h.direction === '-y') {
+            furnObj.RotateGCS(AxisX, 90);
+        } else if (h.direction === 'y') {
+            furnObj.RotateGCS(AxisX, -90);
+        }
+        furnObj.TranslateGCS(NewVector(0, 0, z));
+        return furnObj;
     };
 
     Builder.prototype.getFurnitureFilePath = function (hole) {
