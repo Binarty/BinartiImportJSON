@@ -436,9 +436,10 @@ const Builder = (function () {
 
         for (let i = 0; i < holes.length; i += 1) {
             let furnObj = null;
-            if (holes[i].name === 'МФ') {
+            if (holes[i].name === 'МФ' || holes[i].replacedOnName === 'МФ') {
                 for (let key in holes[i].params) {
                     if (!holes[i].params.hasOwnProperty(key)) continue;
+
                     furnObj = this.mountHole(holes[i].params[key], panel);
                     if (furnObj) result.push(furnObj);
                 }
