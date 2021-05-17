@@ -241,7 +241,7 @@ const Builder = (function () {
         }
 
         if (shape.rotated === '1') {
-            c.Rotate(c.Max.x / 2, c.Max.y / 2, -90);
+            c.Rotate(c.Max.x / 2, c.Max.x / 2, -90);
         }
 
         const getWithOrderName = shape.getWithOrder === 'true' ? '(Выдать с заказом)' : '';
