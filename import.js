@@ -91,7 +91,10 @@ const Reader = (function () {
             return [];
         }
 
-        if (data.creator !== "Binarti" || !data.list) return [];
+        if ((data.creator !== "Binarti" && data.creator !== "BinartiBazisExporter") || !data.list) {
+            alert('Некорректный формат файла');
+            return [];
+        }
         if (data.version > VERSION) {
             alert("Версия скрипта устарела. Работа скрипта может быть нестабильной. Пожалуйста, скачайте новый скрипт с сайта binarti.ru");
         } else if (data.version < VERSION) {
