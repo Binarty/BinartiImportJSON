@@ -439,7 +439,7 @@ const Builder = (function () {
 
         for (let i = 0; i < holes.length; i += 1) {
             let furnObj = null;
-            if (holes[i].name === 'МФ' || holes[i].replacedOnName === 'МФ') {
+            if (holes[i].code === 'Minifix') {
                 for (let key in holes[i].params) {
                     if (!holes[i].params.hasOwnProperty(key)) continue;
 
