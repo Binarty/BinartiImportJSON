@@ -114,28 +114,10 @@ const Builder = (function () {
     }
 
     Builder.prototype.run = function (data) {
-        this.compiliance = this.loadCompilianceSettings();
-        if (!this.compiliance) return null;
         Helper.cleanScene();
         SetCamera(p3dFront);
         this.data = data;
         this.buildAll();
-    };
-
-    Builder.prototype.loadCompilianceSettings = function () {
-        const _this = this;
-        let compiliance = null;
-        try {
-            compiliance = FS.readFileSync('./settings/compiliance.json');
-        } catch (e) {
-            return;
-        }
-        try {
-            return JSON.parse(compiliance);
-        } catch (e) {
-            alert('Файл с таблицей соответствий отверстий присутствует, но его содержание не считывается');
-            return null;
-        }
     };
 
     Builder.prototype.buildAll = function () {
@@ -455,38 +437,38 @@ const Builder = (function () {
         panel.UserProperty['holes'] = result;
     };
 
-    Builder.prototype.mountHole = function (h, panel) {
-        let x = Helper.roundToDot1(h.x),
-            y = Helper.roundToDot1(h.y),
-            z = Helper.roundToDot1(h.z);
+    Builder.prototype.mountHole = function (hParams, panel) {
+        let x = Helper.roundToDot1(hParams.x),
+            y = Helper.roundToDot1(hParams.y),
+            z = Helper.roundToDot1(hParams.z);
 
-        const furn = OpenFurniture(this.getFurnitureFilePath(h)),
+        const furn = OpenFurniture(this.getFurnitureFilePath(hParams)),
             furnObj = furn.Mount1(panel, x, y, 0, 0);
 
         if (!furnObj) {
-            wlog('Не найден файл фурнитуры');
+            alert('Не найден файл фурнитуры: d' + hParams.d + 'x' + hParams.depth);
             return null;
         }
 
-        if (h.direction === '-z') {
+        if (hParams.direction === '-z') {
             furnObj.RotateGCS(AxisX, 180);
-        } else if (h.direction === 'z') {
+        } else if (hParams.direction === 'z') {
 
-        } else if (h.direction === '-x') {
+        } else if (hParams.direction === '-x') {
             furnObj.RotateGCS(AxisY, -90);
-        } else if (h.direction === 'x') {
+        } else if (hParams.direction === 'x') {
             furnObj.RotateGCS(AxisY, 90);
-        } else if (h.direction === '-y') {
+        } else if (hParams.direction === '-y') {
             furnObj.RotateGCS(AxisX, 90);
-        } else if (h.direction === 'y') {
+        } else if (hParams.direction === 'y') {
             furnObj.RotateGCS(AxisX, -90);
         }
         furnObj.TranslateGCS(NewVector(0, 0, z));
         return furnObj;
     };
 
-    Builder.prototype.getFurnitureFilePath = function (hole) {
-        const name = 'd' + Helper.roundToDot1(this.compiliance[hole.name].d) + 'x' + this.compiliance[hole.name].depth;
+    Builder.prototype.getFurnitureFilePath = function (hParams) {
+        const name = 'd' + Helper.roundToDot1(hParams.d) + 'x' + hParams.depth;
         return 'assets/holes/' + name + '.f3d';
     };
 
