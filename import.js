@@ -395,7 +395,6 @@ const Builder = (function () {
     };
 
     Builder.prototype.addCuts = function (panel, cuts) {
-        console.log({ panel: panel, cuts: cuts });
         for (let i = 0; i < cuts.length; i += 1) {
             const cut = panel.AddCut(),
                 x = Helper.roundToDot1(cuts[i].params.x),
@@ -403,7 +402,6 @@ const Builder = (function () {
                 width = Helper.roundToDot1(cuts[i].params.width),
                 depth = Helper.roundToDot1(cuts[i].params.depth);
 
-            console.log(x, y, width, depth);
             cut.Sign = '' + width + 'x' + depth + 'mm';
 
             if (y === 0) {
