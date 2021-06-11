@@ -395,25 +395,29 @@ const Builder = (function () {
     };
 
     Builder.prototype.addCuts = function (panel, cuts) {
+        console.log({ panel: panel, cuts: cuts });
         for (let i = 0; i < cuts.length; i += 1) {
             const cut = panel.AddCut(),
-                x = Helper.roundToDot1(cuts[i].x),
-                y = Helper.roundToDot1(cuts[i].y),
-                width = Helper.roundToDot1(cuts[i].width),
-                depth = Helper.roundToDot1(cuts[i].depth);
+                x = Helper.roundToDot1(cuts[i].params.x),
+                y = Helper.roundToDot1(cuts[i].params.y),
+                width = Helper.roundToDot1(cuts[i].params.width),
+                depth = Helper.roundToDot1(cuts[i].params.depth);
 
+            console.log(x, y, width, depth);
             cut.Sign = '' + width + 'x' + depth + 'mm';
+
             if (y === 0) {
                 cut.Trajectory.AddLine(x, 0, x, panel.ContourHeight);
             } else {
                 cut.Trajectory.AddLine(0, y, panel.ContourWidth, y);
             }
-            if (cuts[i].direction === '-z') {
+            if (cuts[i].params.direction === '-z') {
                 cut.Contour.AddRectangle(0, panel.Thickness, width, panel.Thickness - depth);
             } else {
                 cut.Contour.AddRectangle(0, 0, width, depth);
             }
         }
+
     };
 
     Builder.prototype.addHoles = function (panel, holes) {
