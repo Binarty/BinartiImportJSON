@@ -5,7 +5,10 @@
 const FS = require('fs'),
     PATH = require('path');
 
-const VERSION = "1.0";
+
+const VERSION = '1.0';
+
+
 
 const Reader = (function () {
     function Reader() {
@@ -95,9 +98,10 @@ const Reader = (function () {
             alert('Некорректный формат файла');
             return [];
         }
-        if (data.version > VERSION) {
+
+        if (parseFloat(data.version) > parseFloat(VERSION)) {
             alert("Версия скрипта устарела. Работа скрипта может быть нестабильной. Пожалуйста, скачайте новый скрипт с сайта binarti.ru");
-        } else if (data.version < VERSION) {
+        } else if (parseFloat(data.version) < parseFloat(VERSION)) {
             alert("Версия файла устарела. Работа скрипта может быть нестабильной");
         }
         data = Helper.convertObjectToArray(data.list);
@@ -229,6 +233,8 @@ const Builder = (function () {
             c.Rotate(c.Max.x / 2, c.Max.x / 2, -90);
         }
 
+
+
         const getWithOrderName = shape.getWithOrder === 'true' ? '(Выдать с заказом)' : '';
         panel.Name = shape.name + getWithOrderName;
         //panel.Sign = 'what write there??';
@@ -340,8 +346,10 @@ const Builder = (function () {
         panel.PositionZ = z;
 
         const holes = panel.UserProperty['holes'];
-        for (let i = 0; i < holes.length; i += 1) {
-            holes[i].TranslateGCS(NewVector(x, y, z));
+        if (holes && holes.length) {
+            for (let i = 0; i < holes.length; i += 1) {
+                holes[i].TranslateGCS(NewVector(x, y, z));
+            }
         }
     };
 
