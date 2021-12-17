@@ -367,10 +367,10 @@ const Builder = (function () {
         for (let i = 0; i < panel.Butts.Count; i += 1) {
             if (panel.Butts[i].ElemIndex !== buttIndex) continue;
 
-            panel.Butts[i].Material = edgeData.thickness + '/' + edgeData.width + ' - ' + edgeData.name + ' - ' + edgeData.id;
+            panel.Butts[i].Material = edgeData.thickness + 'x' + edgeData.width + ' - ' + edgeData.name + ' - ' + edgeData.id;
             panel.Butts[i].Thickness = Helper.roundToDot1(edgeData.thickness);
             panel.Butts[i].Width = Helper.roundToDot1(edgeData.width);
-            panel.Butts[i].Sign = edgeData.thickness + '/' + edgeData.width + ' ' + edgeData.name;
+            panel.Butts[i].Sign = edgeData.thickness + 'x' + edgeData.width + ' ' + edgeData.name;
             panel.Butts[i].ClipPanel = false;
         }
     };
@@ -392,10 +392,10 @@ const Builder = (function () {
                 for (let k = 0; k < panel.Butts.Count; k += 1) {
                     if (panel.Butts[k].ElemIndex !== parseInt(i)) continue;
 
-                    panel.Butts[k].Material = edgeData.thickness + '/' + edgeData.width + ' - ' + edgeData.name + ' - ' + edgeData.id;
+                    panel.Butts[k].Material = edgeData.thickness + 'x' + edgeData.width + ' - ' + edgeData.name + ' - ' + edgeData.id;
                     panel.Butts[k].Thickness = Helper.roundToDot1(edge.thickness);
                     panel.Butts[k].Width = Helper.roundToDot1(edge.width);
-                    panel.Butts[k].Sign = edgeData.thickness + '/' + edgeData.width + ' ' + edgeData.name;
+                    panel.Butts[k].Sign = edgeData.thickness + 'x' + edgeData.width + ' ' + edgeData.name;
                     panel.Butts[k].ClipPanel = false;
                 }
             }
