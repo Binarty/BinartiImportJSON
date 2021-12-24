@@ -376,6 +376,7 @@ const Builder = (function () {
     };
 
     Builder.prototype.addButtsForShape = function (panel, edges, path) {
+
         for (let i in path) {
             if (!path.hasOwnProperty(i)) continue;
             let edge = null;
@@ -390,12 +391,13 @@ const Builder = (function () {
                 panel.AddButt(Action.Properties.NewButt('Кромка ' + edge.edgeId), parseInt(i));
 
                 for (let k = 0; k < panel.Butts.Count; k += 1) {
+                    const butt = panel.Butts[k];
                     if (panel.Butts[k].ElemIndex !== parseInt(i)) continue;
 
-                    panel.Butts[k].Material = edgeData.thickness + 'x' + edgeData.width + ' - ' + edgeData.name + ' - ' + edgeData.id;
+                    panel.Butts[k].Material = edge.thickness + 'x' + edge.width + ' - ' + edge.name + ' - ' + edge.id;
                     panel.Butts[k].Thickness = Helper.roundToDot1(edge.thickness);
                     panel.Butts[k].Width = Helper.roundToDot1(edge.width);
-                    panel.Butts[k].Sign = edgeData.thickness + 'x' + edgeData.width + ' ' + edgeData.name;
+                    panel.Butts[k].Sign = edge.thickness + 'x' + edge.width + ' ' + edge.name;
                     panel.Butts[k].ClipPanel = false;
                 }
             }
